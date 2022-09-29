@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+
+	</head>
+	<body>
+	<input type="button" id="id1" onclick="connect();" value="打开连接"></input>
+	<input type="button" id="id2" onclick="send('你好');" value="发送消息"></input>
+	<input type="button" id="id3" onclick="close();" value="关闭连接"></input>
+		<script src="stomp.js"></script>
+		<script type="text/javascript">
+		var client = null;
+		function connect()
+		{
+	    	var ws = new WebSocket('ws://127.0.0.1:15674/ws');
+		    client = Stomp.over(ws);
+		    client.onreceive = function(m) {
+		    	alert(m);
+		    }
+
+		    var on_connect = function(x) {
+		        id = client.subscribe("/queue/test", function(m) {
+		            alert('11111');
+		        });
+		    };
+		    var on_error =  function() {
+		        console.log('error');
+		    };
+		    client.connect('admin', 'admin', on_connect, on_error, '/');
+
+	    }
+		function send(text){
+			//test为队列名，交换机为默认交换机
+			client.send('/queue/test', {'reply-to': '/temp-queue/foo'}, text);
+		}
+		function close(){
+			client.close();
+		}
+    </script>
+	</body>
+</html>

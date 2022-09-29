@@ -1,0 +1,15 @@
+version: "3"
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9010:9010"
+    volumes:
+      - /C/opt/data/minio:/data
+    environment:
+      MINIO_ROOT_USER: "root"
+      MINIO_ROOT_PASSWORD: "rootroot" #密码至少8位
+    command: server /data --console-address ":9010"
+    restart: always

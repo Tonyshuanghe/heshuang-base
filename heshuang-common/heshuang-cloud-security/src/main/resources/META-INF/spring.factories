@@ -1,0 +1,8 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.heshuang.security.config.SaTokenConfigure,\
+  com.heshuang.security.controller.OverallExceptionHandler,\
+  com.heshuang.security.listener.MySaTokenListener,\
+  com.heshuang.security.config.FeignClientConfig,\
+  com.heshuang.security.config.MySaTokenAction
+
+  

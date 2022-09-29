@@ -1,0 +1,17 @@
+version: '3'
+services:
+  admin:
+    # docker build -t xxljob
+    # 该版本执行器手动录入
+    image: xxljob
+    restart: always
+    container_name: xxl_job
+    ports:
+      - 28888:8080
+    volumes:
+      - "./tmp:/data/applogs"
+    environment:
+      - DB_DATABASE=jdbc:mysql://192.168.43.1:33306/xxl_job?Unicode=true&characterEncoding=UTF-8&autoReconnect=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - XXL_JOB_TOKEN=heshuang

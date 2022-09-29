@@ -1,0 +1,15 @@
+server:
+  servlet:
+    context-path: /
+  port: 8081
+minio:
+  accessKey: root
+  secretKey: rootroot
+  bucket: heshuang
+  endpoint: http://127.0.0.1:9000
+  readPath: http://127.0.0.1:9000
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB

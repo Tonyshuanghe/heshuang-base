@@ -1,0 +1,153 @@
+server:
+  servlet:
+    context-path: /
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  thymeleaf:
+    cache: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    listener:
+      type: simple
+      simple:
+        default-requeue-rejected: false
+        acknowledge-mode: manual
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DB:0}
+    password: ${REDIS_PASSWORD:}
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/test?useSSL=false&serverTimezone=GMT%2b8&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: root
+    # Hikari 连接池配置
+    #hikari:
+      # 最小空闲连接数量
+      #minimum-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      #idle-timeout: 180000
+      # 连接池最大连接数，默认是10
+      #maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      #auto-commit: true
+      # 连接池名称
+      #pool-name: IamHikariCP
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      #max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      #connection-timeout: 30000
+      #connection-test-query: SELECT 1
+    druid:
+      # 监控配置
+      stat-view-servlet:
+        login-username: admin                       # 登录账号
+        login-password: B$gzF8]ZNtMysql20!9         # 登录密码
+        reset-enable: false                          # 重置监控页面数据
+        url-pattern: /druid/*                       # 登录页面后缀
+        enabled: true                               # 开启监控
+        allow:                                      # 添加IP白名单,不写就是所有都允许
+      # 监控配置中的 web监控
+      web-stat-filter:
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        enabled: true
+      maxActive: 80
+      initialSize: 6
+      minIdle: 5
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      #如果允许时报错 java.lang.ClassNotFoundException:org.apache.log4j.Priority
+      #则导入 log4j 依赖即可
+      filters: stat,wall,slf4j
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      logic-delete-field: isFlag
+      logic-delete-value: 0 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)
+nacos:
+  discovery:
+    auto-register: false
+    namespace: sr-${spring.profiles.active}
+    username: ${NACOS_USER:prod}
+    password: ${NACOS_PWD:sanrui@prod}
+    server-addr: ${NACOS_SERVER:171.221.244.12:30080}
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org:
+      springframework:
+        web: DEBUG
+    root: info
+swagger2:
+  base-package: com.heshuang.businessstart
+  contact: heshuang
+  description: heshuang com
+  terms-of-service-url:
+  version: 1
+  custom-base-path: ${SERVLET_CONTEXT_PATH:/}
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: admin-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+  tokenHead: 'Bearer '  #JWT负载中拿到开头
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**
+      - /admin/login
+      - /admin/register
+      - /admin/info
+      - /admin/logout
+      - /*.html
+      - /demo/**
+      - /demoJpa/**
+      - /admin/sendCaptcha
+      - /admin/smsLogin
+oss:
+  client:
+    enable: false
+    bucket: intel
+    access-key: ${OSS_ACCESS:root}
+    secret-key: ${OSS_SECRET:sanrui@2020}
+    endpoint: ${OSS_ENDPOINT:http://172.16.11.51:9000}
+
+inf:
+  limiter:
+    enable: true
+
