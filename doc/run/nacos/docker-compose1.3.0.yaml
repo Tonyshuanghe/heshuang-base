@@ -1,0 +1,27 @@
+version: "3"
+services:
+  nacos:
+    image: nacos/nacos-server:1.3.0
+    container_name: nacos
+    env_file:
+      - ./env/profile.env
+    volumes:
+      - /C/opt/data/nacos/logs:/home/nacos/logs
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    depends_on:
+      - nacosmysql
+    restart: always
+  nacosmysql:
+    container_name: nacosmysql
+    image: nacos/nacos-mysql:5.7
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - /C/opt/data/nacos/mysql:/var/lib/mysql
+      - /C/opt/bore-win-spec/base/naocs/init:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "33306:3306"
+    restart: always

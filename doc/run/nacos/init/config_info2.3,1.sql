@@ -1,3 +1,8 @@
+drop user 'nacos';
+CREATE USER 'nacos'@'%' IDENTIFIED BY 'nacos';
+grant all privileges on *.*  to "nacos"@"%";
+flush privileges;
+
 /*
  Navicat Premium Data Transfer
 
