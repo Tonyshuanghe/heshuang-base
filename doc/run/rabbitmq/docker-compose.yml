@@ -19,6 +19,6 @@ services:
       - "5672:5672"  #amqp
       - "15672:15672" # web界面
       - "15674:15674" # stomp
-    #  进入容器启动stomp执行 rabbitmq-plugins enable  rabbitmq_web_stomp rabbitmq_web_stomp_examples
+    #  初始化时候进入容器启动stomp执行 rabbitmq-plugins enable  rabbitmq_web_stomp rabbitmq_web_stomp_examples rabbitmq_delayed_message_exchange
     command: [ "rabbitmq-server","/bin/sh -c set eux; 	rabbitmq-plugins enable --offline rabbitmq_management; rm -f /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf; 	cp /plugins/rabbitmq_management-*/priv/www/cli/rabbitmqadmin /usr/local/bin/rabbitmqadmin; 	[ -s /usr/local/bin/rabbitmqadmin ]; 	chmod +x /usr/local/bin/rabbitmqadmin; 	apt-get update; 	apt-get install -y --no-install-recommends python3; 	rm -rf /var/lib/apt/lists/*; 	rabbitmqadmin --version;"]
 

@@ -1,8 +1,8 @@
 version: '3'
 services:
   admin:
-    # docker build -t xxljob
-    # 该版本执行器手动录入
+    # docker build -t xxljob 构建镜像
+    # 页面管理执行器管理-执行器为手动录入
     image: xxljob
     restart: always
     container_name: xxl_job
