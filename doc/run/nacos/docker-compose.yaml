@@ -24,5 +24,5 @@ services:
       - /C/opt/data/nacos/mysql:/var/lib/mysql
       - /C/opt/bore-win-spec/base/naocs/init:/docker-entrypoint-initdb.d/:ro
     ports:
-      - "33306:3306"
+      - "3306:3306"
     restart: always
