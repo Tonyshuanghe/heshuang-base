@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.heshuang.dict.utils;
+package com.heshuang.core.base.utils;
 
 import com.google.common.collect.Lists;
 import com.heshuang.core.base.exception.BusinessException;

@@ -1,0 +1,4 @@
+## AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.heshuang.dataflow.support.BeanPostHolder,\
+com.heshuang.dataflow.support.DataFlowSupport

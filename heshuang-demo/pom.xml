@@ -14,6 +14,7 @@
     <modules>
         <module>heshuang-demo-rabbitmq</module>
         <module>heshuang-demo-minio</module>
+        <module>heshuang-demo-websocket</module>
     </modules>
 
 </project>

@@ -251,7 +251,11 @@
                 <artifactId>heshuang-jpa-support</artifactId>
                 <version>${version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.heshuang</groupId>
+                <artifactId>heshuang-dataflow-support</artifactId>
+                <version>${version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>

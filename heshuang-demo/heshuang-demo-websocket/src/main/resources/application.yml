@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    host: 114.132.47.20
+    password: ja_#_2022_pwd
+    port: 5672
+    username: javaapp

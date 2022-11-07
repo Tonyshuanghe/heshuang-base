@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.heshuang.dict.utils;
+package com.heshuang.core.base.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.google.common.collect.Lists;

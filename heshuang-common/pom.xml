@@ -22,5 +22,6 @@
         <module>heshuang-dict-support</module>
         <module>heshuang-common-hadoop</module>
         <module>heshuang-jpa-support</module>
+        <module>heshuang-dataflow-support</module>
     </modules>
 </project>
