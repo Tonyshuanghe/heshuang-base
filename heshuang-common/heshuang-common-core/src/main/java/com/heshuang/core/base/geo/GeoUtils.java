@@ -10,7 +10,6 @@ import cn.hutool.extra.spring.SpringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.geometry.*;
 import com.heshuang.core.base.exception.BusinessException;
-import jdk.nashorn.internal.objects.Global;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
