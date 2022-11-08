@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.heshuang.common.swagger.SwaggerSupports
-  
+  com.heshuang.knife4j.config.AutoConfigKnife4j

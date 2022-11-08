@@ -104,13 +104,20 @@ logging:
       springframework:
         web: DEBUG
     root: info
-swagger2:
-  base-package: com.heshuang.businessstart
-  contact: heshuang
-  description: heshuang com
-  terms-of-service-url:
-  version: 1
-  custom-base-path: ${SERVLET_CONTEXT_PATH:/}
+swagger:
+  title: spring快速脚手架接口文档
+  description: spring快速脚手架接口文档
+  version: 3
+  headers: Authorization
+  service:
+    - name: 系统权限接口
+      basePackage: com.heshuang.businessstart.ums
+    - name: jpa测试接口
+      basePackage: com.heshuang.businessstart.demojpa
+    - name: mq测试接口
+      basePackage: com.heshuang.businessstart.mqdemo
+    - name: mapper测试接口
+      basePackage: com.heshuang.businessstart.demo
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: admin-secret #JWT加解密使用的密钥
@@ -139,6 +146,7 @@ secure:
       - /demoJpa/**
       - /admin/sendCaptcha
       - /admin/smsLogin
+      - /v3/api-docs
 oss:
   client:
     enable: false

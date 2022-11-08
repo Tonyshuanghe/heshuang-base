@@ -33,6 +33,7 @@
         <poi.version>3.17</poi.version>
         <common-pool.version>2.6.2</common-pool.version>
         <testng.version>6.10</testng.version>
+        <springfox>3.0.0</springfox>
         <knife4j-spring-boot-starter.version>3.0.1</knife4j-spring-boot-starter.version>
         <druid-spring-boot-starter.version>1.1.13</druid-spring-boot-starter.version>
         <bean-mapping.version>2.1.1</bean-mapping.version>
@@ -144,6 +145,11 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox}</version>
             </dependency>
 
             <!-- druid -->

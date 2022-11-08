@@ -14,6 +14,9 @@
  Date: 18/08/2022 17:44:34
 */
 
+
+CREATE database if NOT EXISTS `test` default character set utf8mb4 collate utf8mb4_unicode_ci;
+USE `test`;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

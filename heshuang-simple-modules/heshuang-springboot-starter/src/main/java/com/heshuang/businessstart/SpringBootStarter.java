@@ -12,11 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableOperateLogger
-@EnableBoreJpa
-public class ApplicationStart {
+public class SpringBootStarter {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationStart.class, args);
+        SpringApplication.run(SpringBootStarter.class, args);
     }
 
 
