@@ -34,7 +34,7 @@ public class DelayedSource implements IDataSource {
     }
 
     public DelayedSource(String topic, Class sourceType) {
-        this.topicPostProcessor = (DelayedTopicProcessor) SpringUtil.getBean(DelayedTopicProcessor.class);
+        this.topicPostProcessor = (DelayedTopicProcessor)SpringUtil.getBean(DelayedTopicProcessor.class);
         this.topic = PropEnvUtils.replace(topic);
         CommonUtils.notBlank(this.topic, "topic不能空");
         this.sourceType = sourceType;
@@ -48,8 +48,7 @@ public class DelayedSource implements IDataSource {
         this.failTry = failTry;
     }
     @Override
-
-    public void on(Supplier<List<Object>> supplier) {
+    public List on(Supplier<List<Object>> supplier) {
         if (this.dataFilter != null) {
             List list;
             if (this.failTry) {
@@ -69,24 +68,23 @@ public class DelayedSource implements IDataSource {
             }
         }
 
+        return null;
     }
     @Override
     public void start() {
         this.topicPostProcessor.putQueue(this.topic, this);
     }
     @Override
-
     public void stop() {
         this.topicPostProcessor.rmQueue(this.topic);
     }
     @Override
-
     public void setFilter(DataFilterProxy dataFilterProxy) {
         this.dataFilter = dataFilterProxy;
     }
     @Override
-
     public Class sourceType() {
         return this.sourceType;
     }
 }
+

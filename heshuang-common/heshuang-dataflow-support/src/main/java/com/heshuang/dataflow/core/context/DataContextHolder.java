@@ -6,18 +6,14 @@
 package com.heshuang.dataflow.core.context;
 
 public class DataContextHolder {
-    private static final ThreadLocal<FlowDataContext> contextHolder = new ThreadLocal();
-
-    public DataContextHolder() {
-    }
+    private static final ThreadLocal<FlowDataContext> contextHolder = new ThreadLocal<>();
 
     public static FlowDataContext getContext() {
-        FlowDataContext flowDataContext = (FlowDataContext)contextHolder.get();
+        FlowDataContext flowDataContext = contextHolder.get();
         if (flowDataContext == null) {
             flowDataContext = createEmptyContext();
             contextHolder.set(flowDataContext);
         }
-
         return flowDataContext;
     }
 
@@ -33,3 +29,4 @@ public class DataContextHolder {
         return new FlowDataContext();
     }
 }
+

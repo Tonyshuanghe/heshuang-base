@@ -6,6 +6,7 @@
 package com.heshuang.dataflow.core.filters;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.heshuang.dataflow.core.IDataFilter;
 import com.heshuang.dataflow.core.context.DataContextHolder;
 import com.heshuang.dataflow.utils.HttpUtils;
@@ -21,9 +22,13 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 public class RestFilter implements IDataFilter {
     private Expression expression;
+
     private EvaluationContext evaluationContext;
+
     private Class queryClass;
-    ExpressionParser parser = new SpelExpressionParser();
+
+    ExpressionParser parser = (ExpressionParser)new SpelExpressionParser();
+
     private String method = "GET";
 
     public RestFilter(String method, String queryTpl, Class queryClass) {
@@ -37,27 +42,28 @@ public class RestFilter implements IDataFilter {
     }
     @Override
     public List<Object> filter(List<Object> args) {
-        this.evaluationContext = new StandardEvaluationContext();
+        this.evaluationContext = (EvaluationContext)new StandardEvaluationContext();
         this.evaluationContext.setVariable("data", args);
         Map<String, Object> map = DataContextHolder.getContext().requestMap();
-        String result;
         if (map != null) {
-            Iterator var3 = map.keySet().iterator();
-
-            while(var3.hasNext()) {
-                result = (String)var3.next();
-                this.evaluationContext.setVariable(result, map.get(result));
+            Iterator<String> var3 = map.keySet().iterator();
+            while (var3.hasNext()) {
+                String str = var3.next();
+                this.evaluationContext.setVariable(str, map.get(str));
             }
         }
-
-        String query = String.format("%s", this.expression.getValue(this.evaluationContext));
-        result = "";
+        String query = String.format("%s", new Object[] { this.expression.getValue(this.evaluationContext) });
+        String result = "";
+        String queryParam = null;
+        if (this.expression != null)
+            queryParam = String.format("%s", new Object[] { this.expression.getValue() });
         if ("POST".equalsIgnoreCase(this.method)) {
-            result = HttpUtils.sendPost(query, (String)null);
+            result = HttpUtils.sendPost(query, queryParam);
         } else {
-            result = HttpUtils.sendGet(query, (String)null);
+            result = HttpUtils.sendGet(query, queryParam);
         }
-
-        return this.queryClass != null ? JSON.parseArray(result, this.queryClass) : args;
+        return (this.queryClass != null) ?
+                JSON.parseArray(result, this.queryClass) :
+                Lists.newArrayList(new Object[] { JSON.parseObject(result) });
     }
 }

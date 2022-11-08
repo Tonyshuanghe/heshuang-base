@@ -21,31 +21,28 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class DelayedMessenger {
     private static final Logger log = LoggerFactory.getLogger(DelayedMessenger.class);
+
     private static ObjectMapper mapper = new ObjectMapper();
 
-    public DelayedMessenger() {
+    static {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public static <T> void push(T data, Duration d) {
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setContentType("json");
-        RabbitTemplate rabbitTemplate = (RabbitTemplate) SpringUtil.getBean(RabbitTemplate.class);
+        RabbitTemplate rabbitTemplate = (RabbitTemplate)SpringUtil.getBean(RabbitTemplate.class);
         if (rabbitTemplate != null) {
             try {
                 Message message = new Message(mapper.writeValueAsBytes(data), messageProperties);
                 messageProperties.setContentType("json");
-                messageProperties.setExpiration(String.format("%s", d.toMillis()));
+                messageProperties.setExpiration(String.format("%s", new Object[] { Long.valueOf(d.toMillis()) }));
                 rabbitTemplate.send("dle.delayed", message);
-            } catch (JsonProcessingException var5) {
-                throw BusinessException.of(var5.getMessage(), var5);
+            } catch (JsonProcessingException e) {
+                throw BusinessException.of(e.getMessage(), e);
             }
         } else {
-            log.warn("RabbitTemplate 未配置");
+            log.warn("RabbitTemplate ");
         }
-
-    }
-
-    static {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 }

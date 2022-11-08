@@ -22,35 +22,42 @@ import org.slf4j.LoggerFactory;
 public class RabbitmqSource implements IDataSource {
     private static final Logger log = LoggerFactory.getLogger(RabbitmqSource.class);
     private TopicPostProcessor topicPostProcessor;
-    private String topic;
+    private String[] topic;
     private DataFilterProxy dataFilter;
     private Boolean failTry = true;
     private Class sourceType;
+    private Boolean activate = false;
 
-    public RabbitmqSource(TopicPostProcessor topicPostProcessor, String topic, Class sourceType) {
+    public RabbitmqSource(TopicPostProcessor topicPostProcessor, String[] topics, Class sourceType) {
         this.topicPostProcessor = topicPostProcessor;
-        this.topic = PropEnvUtils.replace(topic);
-        CommonUtils.notBlank(this.topic, "topic不能空");
+        this.setTopic(topics);
         this.sourceType = sourceType;
     }
 
-    public RabbitmqSource(String topic, Class sourceType) {
-        this.topicPostProcessor = (TopicPostProcessor) SpringUtil.getBean(TopicPostProcessor.class);
-        this.topic = PropEnvUtils.replace(topic);
-        CommonUtils.notBlank(this.topic, "topic不能空");
-        this.sourceType = sourceType;
+    private void setTopic(String[] topics) {
+        this.topic = new String[topics.length];
+
+        for(int i = 0; i < topics.length; ++i) {
+            this.topic[i] = PropEnvUtils.replace(topics[i]);
+            CommonUtils.notBlank(this.topic[i], "topic不能空");
+        }
+
     }
 
-    public RabbitmqSource(String topic, Class sourceType, Boolean failTry) {
+    public RabbitmqSource(String[] topics, Class sourceType) {
         this.topicPostProcessor = (TopicPostProcessor)SpringUtil.getBean(TopicPostProcessor.class);
-        this.topic = PropEnvUtils.replace(topic);
-        CommonUtils.notBlank(this.topic, "topic不能空");
+        this.setTopic(topics);
+        this.sourceType = sourceType;
+    }
+
+    public RabbitmqSource(String[] topics, Class sourceType, Boolean failTry) {
+        this.topicPostProcessor = (TopicPostProcessor)SpringUtil.getBean(TopicPostProcessor.class);
+        this.setTopic(topics);
         this.sourceType = sourceType;
         this.failTry = failTry;
     }
     @Override
-
-    public void on(Supplier<List<Object>> supplier) {
+    public List on(Supplier<List<Object>> supplier) {
         if (this.dataFilter != null) {
             List list;
             if (this.failTry) {
@@ -70,25 +77,28 @@ public class RabbitmqSource implements IDataSource {
             }
         }
 
+        return null;
     }
     @Override
-
     public void start() {
+        this.activate = true;
         this.topicPostProcessor.putQueue(this.topic, this);
     }
     @Override
-
     public void stop() {
+        this.activate = false;
         this.topicPostProcessor.rmQueue(this.topic);
     }
     @Override
-
     public void setFilter(DataFilterProxy dataFilterProxy) {
         this.dataFilter = dataFilterProxy;
     }
     @Override
-
     public Class sourceType() {
         return this.sourceType;
+    }
+    @Override
+    public boolean isActivate() {
+        return this.activate;
     }
 }

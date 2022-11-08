@@ -10,14 +10,11 @@ import com.heshuang.dataflow.core.IDataFilter;
 
 public abstract class AbstractDataFilter implements IDataFilter {
     private String name;
-
-    public AbstractDataFilter() {
-    }
-
+    @Override
     public String getName() {
         return this.name;
     }
-
+    @Override
     public void setName(String name) {
         this.name = name;
     }

@@ -36,6 +36,7 @@
 - heshuang-log-support 支持spel表达式
 - heshuang-gateway 网关模块  
 - heshuang-admin 后台管理模块（示例项目 可依据此项目进行扩展）
+- heshuang-dataflow-support 流式处理模块,已支持rabbit和mqtt流式处理(核心类DataStream 可自行扩展)
 ### 使用中间件(项目根目录/doc/run中包含所有中间件)
 minio，naocs，rabbitmq，redis，seata，xxl-job，zipkin
 ### 待优化 

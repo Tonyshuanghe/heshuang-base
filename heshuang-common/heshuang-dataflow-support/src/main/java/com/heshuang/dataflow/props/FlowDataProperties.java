@@ -11,34 +11,27 @@ import lombok.Data;
 import java.util.List;
 @Data
 public class FlowDataProperties {
-    private FlowDataProperties.DataSource source = new FlowDataProperties.DataSource();
-    private List<FlowDataProperties.Processor> processors;
-    private FlowDataProperties.Sink sink;
-
-    public FlowDataProperties() {
-    }
 
 
-    public class Sink {
-        public Sink() {
-        }
+    private DataSource source = new DataSource();
+
+    private List<Processor> processors;
+
+    private Sink sink;
+
+
+
+    public class DataSource {
+        private FlowDataSourceConts type = FlowDataSourceConts.RABBIT;
+
+        private Boolean isInner = Boolean.valueOf(true);
     }
 
     public class Processor {
         private String type;
+
         private String exec;
-
-        public Processor() {
-        }
     }
 
-    public class DataSource {
-        private FlowDataSourceConts type;
-        private Boolean isInner;
-
-        public DataSource() {
-            this.type = FlowDataSourceConts.RABBIT;
-            this.isInner = true;
-        }
-    }
+    public class Sink {}
 }

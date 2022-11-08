@@ -46,7 +46,7 @@ public class DelayedTopicProcessor {
     }
 
     public void init() {
-        this.directMessageListenerContainer = (DirectMessageListenerContainer) SpringUtil.getBean(DirectMessageListenerContainer.class);
+        this.directMessageListenerContainer = (DirectMessageListenerContainer)SpringUtil.getBean(DirectMessageListenerContainer.class);
         this.topicBeanCache = Maps.newConcurrentMap();
         this.dataSource = Maps.newConcurrentMap();
         this.directMessageListenerContainer.setMessageListener((msg) -> {
@@ -111,8 +111,8 @@ public class DelayedTopicProcessor {
     public void queueRemoveIoc(String topic) {
         this.directMessageListenerContainer.removeQueueNames(new String[]{topic});
         if (this.topicBeanCache.containsKey(topic)) {
-            this.destroyBean(((String[])((String[])this.topicBeanCache.get(topic)))[0]);
-            this.destroyBean(((String[])((String[])this.topicBeanCache.get(topic)))[1]);
+            this.destroyBean(((String[])this.topicBeanCache.get(topic))[0]);
+            this.destroyBean(((String[])this.topicBeanCache.get(topic))[1]);
             this.topicBeanCache.remove(topic);
         }
 

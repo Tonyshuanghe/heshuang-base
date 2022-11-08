@@ -7,6 +7,7 @@ package com.heshuang.dataflow.support;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,12 +23,10 @@ import com.heshuang.dataflow.core.IDataSource;
 import com.heshuang.dataflow.core.context.DataContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.listener.DirectMessageListenerContainer;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 public class TopicPostProcessor {
@@ -48,7 +47,7 @@ public class TopicPostProcessor {
     }
 
     public void init() {
-        this.directMessageListenerContainer = (DirectMessageListenerContainer) SpringUtil.getBean(DirectMessageListenerContainer.class);
+        this.directMessageListenerContainer = (DirectMessageListenerContainer)SpringUtil.getBean("streamTopicListenerContainer");
         this.topicBeanCache = Maps.newConcurrentMap();
         this.dataSource = Maps.newConcurrentMap();
         this.directMessageListenerContainer.setMessageListener((msg) -> {
@@ -61,7 +60,12 @@ public class TopicPostProcessor {
                     try {
                         DataContextHolder.getContext().put("_msg-properties", msg.getMessageProperties());
                         if (ds.sourceType() != null) {
-                            msgObject = this.mapper.readValue(msg.getBody(), ds.sourceType());
+                            if ((new String(msg.getBody())).startsWith("[")) {
+                                JavaType javaType = this.mapper.getTypeFactory().constructParametricType(List.class, new Class[]{ds.sourceType()});
+                                msgObject = this.mapper.readValue(msg.getBody(), javaType);
+                            } else {
+                                msgObject = this.mapper.readValue(msg.getBody(), ds.sourceType());
+                            }
                         } else {
                             msgObject = new String(msg.getBody());
                         }
@@ -78,14 +82,20 @@ public class TopicPostProcessor {
         });
     }
 
-    public void putQueue(String key, IDataSource ds) {
-        this.dataSource.put(key, ds);
-        this.queueIntoIoc(key);
+    public void putQueue(String[] key, IDataSource ds) {
+        for(int i = 0; i < key.length; ++i) {
+            this.dataSource.put(key[i], ds);
+            this.queueIntoIoc(key[i]);
+        }
+
     }
 
-    public void rmQueue(String key) {
-        this.dataSource.remove(key);
-        this.queueRemoveIoc(key);
+    public void rmQueue(String... key) {
+        for(int i = 0; i < key.length; ++i) {
+            this.dataSource.remove(key[i]);
+            this.queueRemoveIoc(key[i]);
+        }
+
     }
 
     public void queueIntoIoc(String key) {
@@ -111,8 +121,8 @@ public class TopicPostProcessor {
     public void queueRemoveIoc(String topic) {
         this.directMessageListenerContainer.removeQueueNames(new String[]{topic});
         if (this.topicBeanCache.containsKey(topic)) {
-            this.destroyBean(((String[])((String[])this.topicBeanCache.get(topic)))[0]);
-            this.destroyBean(((String[])((String[])this.topicBeanCache.get(topic)))[1]);
+            this.destroyBean(((String[])this.topicBeanCache.get(topic))[0]);
+            this.destroyBean(((String[])this.topicBeanCache.get(topic))[1]);
             this.topicBeanCache.remove(topic);
         }
 

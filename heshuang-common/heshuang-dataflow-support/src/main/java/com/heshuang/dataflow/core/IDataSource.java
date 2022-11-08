@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public interface IDataSource {
-    void on(Supplier<List<Object>> var1);
+    List on(Supplier<List<Object>> var1);
 
     void start();
 
@@ -18,4 +18,8 @@ public interface IDataSource {
     void setFilter(DataFilterProxy var1);
 
     Class sourceType();
+
+    default boolean isActivate() {
+        return false;
+    }
 }

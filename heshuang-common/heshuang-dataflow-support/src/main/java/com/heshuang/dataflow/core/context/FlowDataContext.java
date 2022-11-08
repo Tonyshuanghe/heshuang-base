@@ -12,12 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 
 public class FlowDataContext {
     private List<Object> data;
-    private String curFlowName;
-    private Map<String, Object> request = Maps.newConcurrentMap();
-    private List<Object> preData;
 
-    public FlowDataContext() {
-    }
+    private String curFlowName;
+
+    private Map<String, Object> request = Maps.newConcurrentMap();
+
+    private List<Object> preData;
 
     public void put(String key, Object value) {
         this.request.put(key, value);
@@ -28,19 +28,17 @@ public class FlowDataContext {
     }
 
     public List<Object> get() {
-        return StringUtils.isNotBlank(this.curFlowName) ? (List)this.request.get(this.curFlowName) : null;
+        if (StringUtils.isNotBlank(this.curFlowName))
+            return (List<Object>)this.request.get(this.curFlowName);
+        return null;
     }
 
     public void setData(List<Object> data) {
-        if (this.data != null) {
+        if (this.data != null)
             this.preData = this.data;
-        }
-
         this.data = data;
-        if (StringUtils.isNotBlank(this.curFlowName)) {
-            this.put(this.curFlowName, data);
-        }
-
+        if (StringUtils.isNotBlank(this.curFlowName))
+            put(this.curFlowName, data);
     }
 
     public List<Object> getData() {
@@ -52,7 +50,7 @@ public class FlowDataContext {
     }
 
     public List<Object> getData(String key) {
-        return (List)this.get(key);
+        return (List<Object>)get(key);
     }
 
     public void setCurFlowName(String name) {

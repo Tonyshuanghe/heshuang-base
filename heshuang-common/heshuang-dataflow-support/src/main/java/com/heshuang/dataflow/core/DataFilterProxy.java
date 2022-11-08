@@ -27,7 +27,7 @@ public class DataFilterProxy {
             if (this.isSimple) {
                 ((DataFilterProxy)this.nextFilters.get(0)).filter(handledData);
             } else {
-                EventHandleUtil.or(this.nextFilters);
+                handledData = EventHandleUtil.or(this.nextFilters);
                 if (this.nextFilter != null) {
                     this.nextFilter.filter(handledData);
                 }
