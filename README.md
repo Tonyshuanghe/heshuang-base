@@ -48,6 +48,7 @@ minio，naocs，rabbitmq，redis，seata，xxl-job，zipkin
 - 支付模块  （可选技术 [JPay](https://github.com/Javen205/JPay))  
 - 日志收集 (可选技术 [ERK 安装](https://github.com/deviantony/docker-elk) [ERK 集成java](https://gitee.com/developers-youcong/yc-framework/tree/main/yc-common/yc-common-logstash))
 - 微服务监控 (可选技术 spring-boot-admin或者prometheus+grafana)
+- ([ 分库分表sharding](https://github.com/yinjihuan/sharding-jdbc.git))
 ### 扩展
 - 大数据方向  (可选技术 [Hadoop 安装](https://youcongtech.com/2021/12/31/Hadoop%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/))
 - 爬虫方向   (可选技术 [webmagic](https://github.com/code4craft/webmagic/))
